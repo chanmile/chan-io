@@ -1,26 +1,56 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import NavBar from './Components/Navbar.jsx'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import Home from './Home'
+import Spotify from './Spotify/Spotify'
+import Spotify_Visualization from './Spotify/Visualization'
+import Crypto from './Crypto/Crypto'
+
+const routes = [
+    {
+        path: "/",
+        exact: true,
+        component: Home
+    },
+    {
+        path: "/spotify/action",
+        component: Spotify
+    },
+    {
+        path: "/spotify/visualizations",
+        component: Spotify_Visualization
+    },
+    // {
+    //     path: "/spotify/callback",
+    //     component: Spotify_Callback
+    // },
+    {
+        path: "/crypto",
+        component: Crypto
+    }
+]
+
+function RouteWithSubRoutes(route) {
+    return (
+        <Route
+          path={route.path}
+          exact={route.exact}
+          // pass the sub-routes down to keep nesting
+          render={props => (<route.component {...props} routes={route.routes} />)}
+        />
+    );
+}
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+        <Router>
+            <div>
+                <div><NavBar/></div>
+                {routes.map((route, i) => ( <RouteWithSubRoutes key={i} {...route} />))}
+            </div>
+        </Router>
     );
   }
 }
