@@ -17,13 +17,9 @@ const routes = [
         path: "/spotify/action",
         component: Spotify
     },
-    {
-        path: "/spotify/visualizations",
-        component: Spotify_Visualization
-    },
     // {
-    //     path: "/spotify/callback",
-    //     component: Spotify_Callback
+    //     path: "/spotify/visualizations",
+    //     component: Spotify_Visualization
     // },
     {
         path: "/crypto",

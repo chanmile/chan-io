@@ -2,39 +2,35 @@ package main
 
 import (
     "fmt"
-    "log"
-    "net/http"
-    "github.com/zmb3/spotify"
-
+    // "log"
+    "github.com/gin-gonic/contrib/static"
+    "github.com/gin-gonic/gin"
 )
 
-const redirectURI = "http://localhost:8099/spotify/callback"
-var (
-	auth  = spotify.NewAuthenticator(redirectURI, spotify.ScopeUserReadPrivate)
-	ch    = make(chan *spotify.Client)
-	state = "abc123"
-)
+type JSONStruct struct{
+  Title string  `json:title`
+  Name string   `json:name`
+}
 
-func completeAuth(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("Attempting spotify Auth...")
-	tok, err := auth.Token(state, r)
-	if err != nil {
-		http.Error(w, "Couldn't get token", http.StatusForbidden)
-		log.Fatal(err)
-	}
-	if st := r.FormValue("state"); st != state {
-		http.NotFound(w, r)
-		log.Fatalf("State mismatch: %s != %s\n", st, state)
-	}
-	// use the token to get an authenticated client
-	client := auth.NewClient(tok)
-	fmt.Fprintf(w, "Login Completed!")
-	ch <- &client
+// REST Requests
+func handleReq(c *gin.Context) {
+  c.JSON(200,gin.H{"title": "reekris", "payload": "asdfa"})
+}
+
+func handleReq2(c *gin.Context) {
+  pp := JSONStruct{Name: "ad", Title: "fdsajfd"}
+  c.JSON(200, gin.H{"title": "Skreenis", "payload":pp})
 }
 
 func main() {
-    fmt.Println("Initializing server")
-    http.HandleFunc("/spotify/callback", completeAuth)
-    http.Handle("/", http.FileServer(http.Dir("./build")))
-    log.Fatal(http.ListenAndServe(":8099", nil))
+    fmt.Println("Initializing server...")
+
+    router := gin.Default()
+    router.Use(static.Serve("/",static.LocalFile("./build", true)))
+
+    router.GET("/req", handleReq)
+    router.GET("/req2", handleReq2)
+
+    router.Run(":8099")
+
 }
