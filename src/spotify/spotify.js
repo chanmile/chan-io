@@ -8,10 +8,12 @@ function handleClick(creds) {
 }
 
 class Spotify extends Component {
+    constructor(props) {super(props);}
   render() {
     return (
         <div className="mainDiv">
             <h2>Spotify API</h2>
+            <h3>{this.props.token}</h3>
             <div className="thirdsDiv"><SubmitForm placeholder="Credentials"/></div>
         </div>
     );

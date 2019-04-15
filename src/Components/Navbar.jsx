@@ -43,7 +43,11 @@ class appNavbar extends Component {
               </NavDropdown>
 
             </Nav>
-            <Nav.Link><i class="fas fa-align-justify"></i></Nav.Link>
+            { this.props.lock == "" ? (
+                <Nav.Link><i class="fas fa-lock-open"></i></Nav.Link>
+            ) : (
+                <Nav.Link><i class="fas fa-lock"></i></Nav.Link>
+            )}
             <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-1" size="sm" />
               <Button variant="outline-primary" size="sm">Search</Button>

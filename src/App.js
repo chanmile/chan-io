@@ -7,6 +7,8 @@ import Spotify from './Spotify/Spotify'
 import Spotify_Visualization from './Spotify/Visualization'
 import Crypto from './Crypto/Crypto'
 
+const queryString = require('query-string');
+
 const routes = [
     {
         path: "/",
@@ -21,13 +23,10 @@ const routes = [
         path: "/spotify/visualizations",
         component: Spotify_Visualization
     },
-    // {
-    //     path: "/spotify/callback",
-    //     component: Spotify_Callback
-    // },
     {
         path: "/crypto",
-        component: Crypto
+        component: Crypto,
+        // data: {props.token}
     }
 ]
 
@@ -37,18 +36,30 @@ function RouteWithSubRoutes(route) {
           path={route.path}
           exact={route.exact}
           // pass the sub-routes down to keep nesting
-          render={props => (<route.component {...props} routes={route.routes} />)}
+          render={props => (<route.component {...props} routes={route.routes} token={route.token}/>)}
         />
     );
 }
 
 class App extends Component {
+    constructor(props){
+      super(props);
+      const parsedHash = queryString.parse(window.location.search);
+      const token = parsedHash.token
+      if (token == null){
+          this.props.token = ""
+      } else {
+          this.props.token = token
+      }
+    }
+
+
   render() {
     return (
         <Router>
             <div>
-                <div><NavBar/></div>
-                {routes.map((route, i) => ( <RouteWithSubRoutes key={i} {...route} />))}
+                <div><NavBar lock={this.props.token}/></div>
+                {routes.map((route, i) => ( <RouteWithSubRoutes token={this.props.token} key={i} {...route} />))}
             </div>
         </Router>
     );
