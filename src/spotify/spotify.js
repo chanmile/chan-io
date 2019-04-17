@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import {InputGroup, FormControl, Button} from 'react-bootstrap';
 import '../css/Style.scss'
-import SubmitForm from '../Components/SubmitForm.jsx'
-
-function handleClick(creds) {
-    alert("Attempting to log in to Spotify using %s" % creds)
-}
+import Request from '../Components/Request.jsx'
 
 class Spotify extends Component {
-    constructor(props) {super(props);}
+constructor(props) {super(props);}
   render() {
     return (
         <div className="mainDiv">
+        { this.props.token == "" ? (
+            <div>
             <h2>Spotify API</h2>
-            <h3>{this.props.token}</h3>
-            <div className="thirdsDiv"><SubmitForm placeholder="Credentials"/></div>
+            <p>Please authenticate with Spotify to use the API</p>
+            </div>
+        ) : (
+            <div>
+            <h2>Spotify API</h2>
+            <p><b>Current Token:</b> {this.props.token}</p>
+            <div><Request/></div>
+            </div>
+        )}
         </div>
     );
   }

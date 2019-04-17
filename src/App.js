@@ -6,6 +6,7 @@ import Home from './Home'
 import Spotify from './Spotify/Spotify'
 import Spotify_Visualization from './Spotify/Visualization'
 import Crypto from './Crypto/Crypto'
+import Json from './Json/Json'
 
 const queryString = require('query-string');
 
@@ -20,13 +21,12 @@ const routes = [
         component: Spotify
     },
     {
-        path: "/spotify/visualizations",
-        component: Spotify_Visualization
+        path: "/json",
+        component: Json
     },
     {
         path: "/crypto",
         component: Crypto,
-        // data: {props.token}
     }
 ]
 

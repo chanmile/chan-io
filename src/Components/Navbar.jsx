@@ -16,11 +16,15 @@ class appNavbar extends Component {
     return (
         <Navbar variant="dark" bg="dark" expand="sm">
           <LinkContainer to="/">
-            <Navbar.Brand onClick={resetState}>Chan.io</Navbar.Brand>
+            <Navbar.Brand>Chan.io</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
+
+                <LinkContainer to="/json">
+                  <Nav.Link>JSON</Nav.Link>
+                </LinkContainer>
 
                 <LinkContainer to="/crypto">
                   <Nav.Link>Crypto</Nav.Link>
