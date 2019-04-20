@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import '../css/Style.scss'
-
 import {InputGroup, FormControl, Button} from 'react-bootstrap';
 import JSONTree from 'react-json-tree'
 

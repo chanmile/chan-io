@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../css/Style.scss'
-import {InputGroup, FormControl, Button} from 'react-bootstrap';
+import {InputGroup, FormControl, Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import JSONTree from 'react-json-tree'
 
 const theme = {
@@ -24,11 +24,27 @@ const theme = {
   base0F: '#cc6633'
 };
 
-function SpotifyRequest({initToken, initialValue}) {
+function SpotifyRequest({initToken, initialValue, parentAction}) {
   const [value, setValue] = useState(initialValue);
   const [token, setToken] = useState(initToken)
   const [response, setRes] = useState("")
   const [help, setHelp] = useState(false)
+  const [pretty, setPretty] = useState(false)
+  const [isPrettyCapable, setIsPretty] = useState(false)
+
+  const showPrettyView = (data) => {
+      var resObj = data
+      if (resObj == null || resObj.href == null) {
+          setIsPretty(false)
+      } else if (resObj.href == "") {
+          setIsPretty(true)
+      } else if (resObj.href.includes("https://api.spotify.com/v1/artists")) {
+          setIsPretty(true)
+      } else {
+          setIsPretty(false)
+      }
+    }
+
 
   const fetchJSON = () => {
         var request = {
@@ -41,7 +57,20 @@ function SpotifyRequest({initToken, initialValue}) {
           body: JSON.stringify(request)
         })
           .then(res => res.json() )
-          .then((data) => setRes(data) )
+          .then((data) => {
+              setRes(data)
+              showPrettyView(data)
+           })
+
+  }
+
+  const togglePretty = () => {
+      console.log('toggling!')
+      if (pretty) {
+          setPretty(false)
+      } else {
+          setPretty(true)
+      }
   }
 
   const toggleHelp = () => {
@@ -54,6 +83,15 @@ function SpotifyRequest({initToken, initialValue}) {
 
   return (
       <div>
+      <ButtonToolbar style={{float: 'right'}}>
+          <ToggleButtonGroup onChange={togglePretty} type="radio" size="sm" name="options" defaultValue={2}>
+              <ToggleButton className="secondary" value={1}><sm>Pretty</sm></ToggleButton>
+              <ToggleButton className="secondary" value={2}>Raw JSON</ToggleButton>
+          </ToggleButtonGroup>
+      </ButtonToolbar>
+
+      <h2>Spotify API</h2>
+
       <div className="thirdsDiv">
         <InputGroup size="sm" className="mb-3">
             <InputGroup.Prepend>
@@ -70,9 +108,24 @@ function SpotifyRequest({initToken, initialValue}) {
             )}
       </div>
       <div className="halvesDiv">
-      <b>Received:</b> <JSONTree data={response} theme={theme} invertTheme={true} /></div>
+        { pretty ? (
+            <div>
+            { isPrettyCapable ? (
+                    <div>Pretty Mode enabled!</div>
+                ) : (
+                    <div><p>Sorry, Pretty Mode is not available for this request.</p></div>
+                )
+            }
+            </div>
+        ) : (
+            <div>
+                <b>Received:</b> <JSONTree data={response} theme={theme} invertTheme={true} />
+            </div>
+        )}
       </div>
-  )
+
+      </div>
+  );
 }
 
 export default SpotifyRequest
