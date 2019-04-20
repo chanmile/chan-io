@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import '../css/Style.scss'
-
 import {InputGroup, FormControl, Button} from 'react-bootstrap';
 import JSONTree from 'react-json-tree'
 
@@ -25,16 +24,21 @@ const theme = {
   base0F: '#cc6633'
 };
 
-function Request({label, initialValue}) {
+function SpotifyRequest({initToken, initialValue}) {
   const [value, setValue] = useState(initialValue);
+  const [token, setToken] = useState(initToken)
   const [response, setRes] = useState("")
   const [help, setHelp] = useState(false)
 
-
   const fetchJSON = () => {
-        fetch(value,{
-          method: 'GET', // or 'PUT'
-          headers:{'Content-Type': 'application/json'}
+        var request = {
+            url: value,
+            access_token: token
+        }
+        fetch("/req",{
+          method: 'POST', // or 'PUT'
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify(request)
         })
           .then(res => res.json() )
           .then((data) => setRes(data) )
@@ -58,12 +62,12 @@ function Request({label, initialValue}) {
             <FormControl onChange={event => setValue(event.target.value)}/>
             <div className="helpicon"><i onClick={toggleHelp} class="fas fa-info-circle"></i></div>
         </InputGroup>
-        { help ? (
-            <div className="helptext"><p><small>Try something like <i>https://jsonplaceholder.typicode.com/posts/6</i><br/>
-            This form can be used to submit arbitrary GET requests.</small></p></div>
-        ) : (
-            <div></div>
-        )}
+            { help ? (
+                <div className="helptext"><p><small>Try something like <i>https://api.spotify.com/v1/artists/1uNFoZAHBGtllmzznpCI3s</i><br/>
+                The Spotify API documentation can be referenced <a target="_blank" href="https://developer.spotify.com/documentation/web-api/reference/">here.</a></small></p></div>
+            ) : (
+                <div></div>
+            )}
       </div>
       <div className="halvesDiv">
       <b>Received:</b> <JSONTree data={response} theme={theme} invertTheme={true} /></div>
@@ -71,4 +75,4 @@ function Request({label, initialValue}) {
   )
 }
 
-export default Request
+export default SpotifyRequest

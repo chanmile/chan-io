@@ -31,14 +31,15 @@ class appNavbar extends Component {
                 </LinkContainer>
 
                 <NavDropdown title="Spotify API" id="basic-nav-dropdown">
-                    <LinkContainer to="/spotify/action">
-                      <NavDropdown.Item>Action</NavDropdown.Item>
+                    <LinkContainer to="/spotify/auth">
+                      <NavDropdown.Item>Authenticate</NavDropdown.Item>
                     </LinkContainer>
 
-                    <NavDropdown.Item>Another Action</NavDropdown.Item>
-
-                    <NavDropdown.Item>Something</NavDropdown.Item>
                     <NavDropdown.Divider />
+
+                    <LinkContainer to="/spotify/api">
+                        <NavDropdown.Item>API</NavDropdown.Item>
+                    </LinkContainer>
 
                 <LinkContainer to="/spotify/visualizations">
                     <NavDropdown.Item>Visualizations</NavDropdown.Item>

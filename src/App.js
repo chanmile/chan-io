@@ -3,8 +3,9 @@ import NavBar from './Components/Navbar.jsx'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Home from './Home'
-import Spotify from './Spotify/Spotify'
+import Spotify_Auth from './Spotify/Spotify_Auth'
 import Spotify_Visualization from './Spotify/Visualization'
+import Spotify_API from './Spotify/Spotify_API'
 import Crypto from './Crypto/Crypto'
 import Json from './Json/Json'
 
@@ -17,8 +18,12 @@ const routes = [
         component: Home
     },
     {
-        path: "/spotify/action",
-        component: Spotify
+        path: "/spotify/auth",
+        component: Spotify_Auth
+    },
+    {
+        path: "/spotify/api",
+        component: Spotify_API
     },
     {
         path: "/json",
@@ -44,8 +49,8 @@ function RouteWithSubRoutes(route) {
 class App extends Component {
     constructor(props){
       super(props);
-      const parsedHash = queryString.parse(window.location.search);
-      const token = parsedHash.token
+      const parsedHash = queryString.parse(window.location.hash);
+      const token = parsedHash.access_token
       if (token == null){
           this.props.token = ""
       } else {
