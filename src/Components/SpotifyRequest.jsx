@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import '../css/Style.scss'
 import {InputGroup, FormControl, Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import JSONTree from 'react-json-tree'
+import SpotifyArtist from '../Components/SpotifyArtist.jsx'
 
 const theme = {
   scheme: 'monokai',
@@ -31,6 +32,8 @@ function SpotifyRequest({initToken, initialValue, parentAction}) {
   const [help, setHelp] = useState(false)
   const [pretty, setPretty] = useState(false)
   const [isPrettyCapable, setIsPretty] = useState(false)
+
+
 
   const showPrettyView = (data) => {
       var resObj = data
@@ -81,6 +84,10 @@ function SpotifyRequest({initToken, initialValue, parentAction}) {
       }
   }
 
+  useEffect(() => {
+      console.log(response)
+    })
+
   return (
       <div>
       <ButtonToolbar style={{float: 'right'}}>
@@ -111,7 +118,7 @@ function SpotifyRequest({initToken, initialValue, parentAction}) {
         { pretty ? (
             <div>
             { isPrettyCapable ? (
-                    <div>Pretty Mode enabled!</div>
+                    <div><SpotifyArtist token={token} data={response}/></div>
                 ) : (
                     <div><p>Sorry, Pretty Mode is not available for this request.</p></div>
                 )

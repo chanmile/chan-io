@@ -20,7 +20,7 @@ constructor(props) {super(props);
   render() {
     return (
         <div className="mainDiv">
-        { this.props.token == "changeme" ? (
+        { this.props.token == "" ? (
             <div>
             <h2>Spotify API</h2>
             <p>Please authenticate with Spotify under Spotify > Authenticate </p>

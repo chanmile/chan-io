@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Home from './Home'
 import Spotify_Auth from './Spotify/Spotify_Auth'
-import Spotify_Visualization from './Spotify/Visualization'
+import Personalization from './Spotify/Personalization'
 import Spotify_API from './Spotify/Spotify_API'
 import Crypto from './Crypto/Crypto'
 import Json from './Json/Json'
@@ -24,6 +24,10 @@ const routes = [
     {
         path: "/spotify/api",
         component: Spotify_API
+    },
+    {
+        path: "/spotify/personalization",
+        component: Personalization
     },
     {
         path: "/json",

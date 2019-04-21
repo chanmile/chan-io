@@ -68,8 +68,16 @@
     opacity: .65;
 }
 
-// .secondary.btn.btn-primary {
-//     background-color: #d9d9d9;
-//     border-color: #b7b7b7;
-//     color: #333;
-// }
+.artistCardImage {
+    float: right;
+    max-width: 40%;
+    max-height: 40%;
+}
+
+.artistImage {
+    max-width: 100%;
+}
+
+.artOl {
+    min-height: 140px;
+}

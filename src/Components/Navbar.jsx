@@ -41,8 +41,8 @@ class appNavbar extends Component {
                         <NavDropdown.Item>API</NavDropdown.Item>
                     </LinkContainer>
 
-                <LinkContainer to="/spotify/visualizations">
-                    <NavDropdown.Item>Visualizations</NavDropdown.Item>
+                <LinkContainer to="/spotify/personalization">
+                    <NavDropdown.Item>Personalizations</NavDropdown.Item>
                 </LinkContainer>
 
               </NavDropdown>
