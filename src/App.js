@@ -56,9 +56,13 @@ class App extends Component {
       const parsedHash = queryString.parse(window.location.hash);
       const token = parsedHash.access_token
       if (token == null){
-          this.props.token = ""
+          this.state = {
+              token:""
+          }
       } else {
-          this.props.token = token
+          this.state = {
+              token:token
+          }
       }
     }
 
@@ -67,8 +71,8 @@ class App extends Component {
     return (
         <Router>
             <div>
-                <div><NavBar lock={this.props.token}/></div>
-                {routes.map((route, i) => ( <RouteWithSubRoutes token={this.props.token} key={i} {...route} />))}
+                <div><NavBar lock={this.state.token}/></div>
+                {routes.map((route, i) => ( <RouteWithSubRoutes token={this.state.token} key={i} {...route} />))}
             </div>
         </Router>
     );
