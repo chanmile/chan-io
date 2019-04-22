@@ -3,11 +3,11 @@ import NavBar from './Components/Navbar.jsx'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Home from './Home'
-import Spotify_Auth from './Spotify/Spotify_Auth'
-import Personalization from './Spotify/Personalization'
-import Spotify_API from './Spotify/Spotify_API'
-import Crypto from './Crypto/Crypto'
-import Json from './Json/Json'
+import Spotify_Auth from './spotify/Spotify_Auth'
+import Personalization from './spotify/Personalization'
+import Spotify_API from './spotify/Spotify_API'
+import Crypto from './crypto/Crypto'
+import Json from './json/Json'
 
 const queryString = require('query-string');
 
