@@ -166,4 +166,4 @@ app.post("/req", function(req, res) {
 })
 
 console.log('Listening on 8099');
-app.listen(8099);
+app.listen(process.env.PORT);
