@@ -38,11 +38,19 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('chan-io/build'));
+}
+
 app.use(express.static(__dirname + '/build'))
    .use(cors())
    .use(cookieParser());
 
 app.use(bodyParser.json())
+
+app.get('*', (request, response) => {
+	response.sendFile(path.join(__dirname, 'chan-io/build', 'index.html'));
+});
 
 app.get('/login', function(req, res) {
 
@@ -166,4 +174,4 @@ app.post("/req", function(req, res) {
 })
 
 console.log('Listening on 8099');
-app.listen(8099);
+app.listen(process.env.PORT);

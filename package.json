@@ -1,6 +1,6 @@
 {
   "name": "webserver",
-  "homepage": "http://localhost:8099",
+  "homepage": "https://chan-io.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
