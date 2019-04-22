@@ -16,8 +16,8 @@ var bodyParser = require('body-parser')
 
 var client_id = process.env.CLIENT_ID_SPOTIFY; // Your client id
 var client_secret = process.env.CLIENT_SECRET_SPOTIFY; // Your secret
-var redirect_uri = 'http://localhost:8099/callback'; // Your redirect uri
-// var redirect_uri = 'https://chan-io.herokuapp.com/callback'; // Your redirect uri
+// var redirect_uri = 'http://localhost:8099/callback'; // Your redirect uri
+var redirect_uri = 'https://chan-io.herokuapp.com/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
