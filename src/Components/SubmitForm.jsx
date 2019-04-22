@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {InputGroup, FormControl, Button} from 'react-bootstrap';
-import Request from '../Components/Request'
+import Request from '../Components/Request.jsx'
 
 
 class SubmitForm extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Card, CardColumns} from 'react-bootstrap';
-import '../css/Style.scss'
+import '../css/style.scss'
 
 function getGenres(genres) {
     var genreString = ''

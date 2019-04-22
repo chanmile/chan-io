@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import '../css/Style.scss'
+import '../css/style.scss'
 import {InputGroup, FormControl, Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import JSONTree from 'react-json-tree'
 import SpotifyArtist from '../Components/SpotifyArtist.jsx'
