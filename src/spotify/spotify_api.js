@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {InputGroup, FormControl, Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import '../css/Style.scss'
-import Request from '../Components/Request.jsx'
 import SpotifyRequest from '../Components/SpotifyRequest.jsx'
 
 
@@ -10,11 +8,6 @@ constructor(props) {super(props);
         this.state = {
             disablePretty : false
         }
-    }
-
-    disable = (event) => {
-        this.setState( {disablePretty : !this.state.disablePretty } );
-        console.log("We toggled!")
     }
 
   render() {
@@ -26,7 +19,7 @@ constructor(props) {super(props);
             <p>Please authenticate with Spotify under Spotify > Authenticate </p>
             </div>
         ) : (
-            <div><SpotifyRequest onChange={this.disable} initToken={this.props.token}/></div>
+            <div><SpotifyRequest initToken={this.props.token}/></div>
         )}
         </div>
     );

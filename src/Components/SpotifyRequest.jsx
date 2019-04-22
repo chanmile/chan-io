@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from 'react';
 import '../css/Style.scss'
 import {InputGroup, FormControl, Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import JSONTree from 'react-json-tree'
@@ -25,114 +25,117 @@ const theme = {
   base0F: '#cc6633'
 };
 
-function SpotifyRequest({initToken, initialValue, parentAction}) {
-  const [value, setValue] = useState(initialValue);
-  const [token, setToken] = useState(initToken)
-  const [response, setRes] = useState("")
-  const [help, setHelp] = useState(false)
-  const [pretty, setPretty] = useState(false)
-  const [isPrettyCapable, setIsPretty] = useState(false)
-
-
-
-  const showPrettyView = (data) => {
-      var resObj = data
-      if (resObj == null || resObj.href == null) {
-          setIsPretty(false)
-      } else if (resObj.href == "") {
-          setIsPretty(true)
-      } else if (resObj.href.includes("https://api.spotify.com/v1/artists")) {
-          setIsPretty(true)
-      } else {
-          setIsPretty(false)
+class SpotifyRequest extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+          value : this.props.data,
+          token : this.props.initToken,
+          response : "",
+          help : false,
+          pretty : false,
+          prettyCapable : false
       }
-    }
+  }
 
-
-  const fetchJSON = () => {
+  fetchJSON = () => {
         var request = {
-            url: value,
-            access_token: token
+            url: this.state.value,
+            access_token: this.state.token
         }
         fetch("/req",{
-          method: 'POST', // or 'PUT'
+          method: 'POST',
           headers:{'Content-Type': 'application/json'},
           body: JSON.stringify(request)
         })
           .then(res => res.json() )
           .then((data) => {
-              setRes(data)
-              showPrettyView(data)
+              this.setState({response:data})
+              this.showPrettyView()
            })
-
   }
 
-  const togglePretty = () => {
-      console.log('toggling!')
-      if (pretty) {
-          setPretty(false)
+  showPrettyView = (data) => {
+      var resObj = this.state.response
+      console.dir(resObj)
+      if (resObj == null || resObj.href == null) {
+          this.setState({prettyCapable:false})
+      } else if (resObj.href == "") {
+          this.setState({prettyCapable:true})
+      } else if (resObj.href.includes("https://api.spotify.com/v1/artists")) {
+          this.setState({prettyCapable:true})
       } else {
-          setPretty(true)
+          this.setState({prettyCapable:false})
       }
   }
 
-  const toggleHelp = () => {
-      if (help) {
-          setHelp(false)
+  toggleHelp = () => {
+      if (this.state.help) {
+          this.setState({help:false})
       } else {
-          setHelp(true)
+          this.setState({help:true})
       }
   }
 
-  useEffect(() => {
-      console.log(response)
-    })
+  togglePretty = () => {
+      if (this.state.pretty) {
+          this.setState({pretty:false})
+      } else {
+          this.setState({pretty:true})
+      }
+  }
 
-  return (
-      <div>
-      <ButtonToolbar style={{float: 'right'}}>
-          <ToggleButtonGroup onChange={togglePretty} type="radio" size="sm" name="options" defaultValue={2}>
-              <ToggleButton className="secondary" value={1}><sm>Pretty</sm></ToggleButton>
-              <ToggleButton className="secondary" value={2}>Raw JSON</ToggleButton>
-          </ToggleButtonGroup>
-      </ButtonToolbar>
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.data !== prevState.data) {
+      this.showPrettyView(this.state.data)
+    }
+  }
 
-      <h2>Spotify API</h2>
+  render() {
+    return (
+        <div>
+          <ButtonToolbar style={{float: 'right'}}>
+              <ToggleButtonGroup onChange={this.togglePretty} type="radio" size="sm" name="options" defaultValue={2}>
+                  <ToggleButton className="secondary" value={1}><sm>Pretty</sm></ToggleButton>
+                  <ToggleButton className="secondary" value={2}>Raw JSON</ToggleButton>
+              </ToggleButtonGroup>
+          </ButtonToolbar>
 
-      <div className="thirdsDiv">
-        <InputGroup size="sm" className="mb-3">
-            <InputGroup.Prepend>
-                <Button id="myButton" onClick={fetchJSON}>Submit</Button>
-            </InputGroup.Prepend>
-            <FormControl onChange={event => setValue(event.target.value)}/>
-            <div className="helpicon"><i onClick={toggleHelp} class="fas fa-info-circle"></i></div>
-        </InputGroup>
-            { help ? (
-                <div className="helptext"><p><small>Try something like <i>https://api.spotify.com/v1/artists/1uNFoZAHBGtllmzznpCI3s</i><br/>
-                The Spotify API documentation can be referenced <a target="_blank" href="https://developer.spotify.com/documentation/web-api/reference/">here.</a></small></p></div>
-            ) : (
-                <div></div>
-            )}
-      </div>
-      <div className="halvesDiv">
-        { pretty ? (
-            <div>
-            { isPrettyCapable ? (
-                    <div><SpotifyArtist token={token} data={response}/></div>
+          <h2>Spotify API</h2>
+
+          <div className="thirdsDiv">
+            <InputGroup size="sm" className="mb-3">
+                <InputGroup.Prepend>
+                    <Button id="myButton" onClick={this.fetchJSON}>Submit</Button>
+                </InputGroup.Prepend>
+                <FormControl onChange={event => this.setState({value : event.target.value})}/>
+                <div className="helpicon"><i onClick={this.toggleHelp} class="fas fa-info-circle"></i></div>
+            </InputGroup>
+                { this.state.help ? (
+                    <div className="helptext"><p><small>Try something like <i>https://api.spotify.com/v1/artists/1uNFoZAHBGtllmzznpCI3s</i><br/>
+                    The Spotify API documentation can be referenced <a target="_blank" href="https://developer.spotify.com/documentation/web-api/reference/">here.</a></small></p></div>
                 ) : (
-                    <div><p>Sorry, Pretty Mode is not available for this request.</p></div>
-                )
-            }
-            </div>
-        ) : (
-            <div>
-                <b>Received:</b> <JSONTree data={response} theme={theme} invertTheme={true} />
-            </div>
-        )}
-      </div>
-
-      </div>
-  );
+                    <div></div>
+                )}
+          </div>
+          <div className="halvesDiv">
+            { this.state.pretty  ? (
+                <div>
+                { this.state.prettyCapable ? (
+                  <div><SpotifyArtist shouldUpdate={this.state.prettyCapable} token={this.state.token} data={this.state.response}/></div>
+                ) : (
+                  <div><p>Sorry, Pretty Mode is not available for this request.</p></div> )
+                }
+                </div>
+            ) : (
+                <div>
+                  <b>Received:</b> <JSONTree data={this.state.response} theme={theme} invertTheme={true} />
+                </div>
+            )}
+          </div>
+    </div>
+    );
+  }
 }
 
 export default SpotifyRequest

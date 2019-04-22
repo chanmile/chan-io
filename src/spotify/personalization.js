@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {InputGroup, FormControl, Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
-import {Card, CardColumns} from 'react-bootstrap';
-
-import JSONTree from 'react-json-tree'
+import {Button, ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap';
+import {OverlayTrigger, Tab, Row, Col, ListGroup} from 'react-bootstrap';
+import ArtistCard from '../Components/artistCard.jsx';
+import TrackCard from '../Components/trackCard.jsx';
 
 import '../css/Style.scss'
 
@@ -26,6 +26,22 @@ const theme = {
   base0E: '#ae81ff',
   base0F: '#cc6633'
 };
+
+function getPopularityArtists(artists) {
+  var sum = 0
+    for (var i=0; i < artists.length; i++) {
+      sum += Number(artists[i].popularity)
+    }
+    return sum / artists.length
+}
+
+function getPopularityTracks(tracks) {
+  var sum = 0
+    for (var i=0; i < tracks.length; i++) {
+      sum += Number(tracks[i].popularity)
+    }
+    return sum / tracks.length
+}
 
 class Personalization extends Component {
     constructor(props) {
@@ -53,7 +69,9 @@ class Personalization extends Component {
         this.setState({term:"long_term"})
     }
     fetchUser = (event) => {
-        var reqUrl = 'https://api.spotify.com/v1/me/top/' + this.state.artOrTrack + '?time_range=' + this.state.term
+
+        this.setState({ response: null });
+        var reqUrl = 'https://api.spotify.com/v1/me/top/' + this.state.artOrTrack + '?time_range=' + this.state.term + '&limit=50'
         var request = {
             url: reqUrl,
             access_token: this.props.token
@@ -97,30 +115,72 @@ class Personalization extends Component {
                 <ToggleButton onChange={this.changeLong} className="secondary" value={3}>Long Term</ToggleButton>
             </ToggleButtonGroup>
         </ButtonToolbar>
-        <Button id="myButton" onClick={this.fetchUser}>Submit</Button>
+        <Button size='sm' id="myButton" onClick={this.fetchUser}>Submit</Button>
         <div>
         { this.state.response == null ?
-        ( <div>Loading...</div>) : (
+        ( <div></div>) : (
             <div>
-            { this.state.artOrTrack == "artists" ? (
+            { this.state.response.href.includes("top/artists") ? (
                 <div>
-                <ol>
-                {this.state.response.items.map((item, index) => (
-                        <li>{item.name}</li>
-                ))}
-                </ol>
+                <br/>
+                <b>Average Popularity: </b>{getPopularityArtists(this.state.response.items)}
+                <br/>
+                <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+                <Row><Col sm={4}>
+                <ListGroup>
+                  {this.state.response.items.map((item, index) => (
+                      <OverlayTrigger
+                        data={item.name}
+                        placement="right-start"
+                        trigger='focus'
+                        overlay={
+                            <div><ArtistCard
+                                    popularity={item.popularity}
+                                    genres={item.genres}
+                                    name={item.name}
+                                    image={item.images[0].url}/>
+                                    </div>}>
+                          <ListGroup.Item variant="dark" action><b>{index + 1}  {item.name}</b></ListGroup.Item>
+                      </OverlayTrigger>
+                  ))}
+                  </ListGroup>
+                  </Col>
+                  </Row>
+                  </Tab.Container>
                 </div>
-            ) : (<div><ol>
-                    {this.state.response.items.map((item, index) => (
-                            <li>{item.name}</li>
-                    ))}</ol>
-                    </div>)
-            }</div>
+            ) : (
+              <div>
+              <br/>
+              <b>Average Popularity: </b>{getPopularityTracks(this.state.response.items)}
+              <br/>
+            <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+            <Row><Col sm={4}>
+            <ListGroup>
+              {this.state.response.items.map((item, index) => (
+                  <OverlayTrigger
+                    data={item.name}
+                    placement="right-start"
+                    trigger='focus'
+                    overlay={
+                        <div><TrackCard
+                                popularity={item.popularity}
+                                artist={item.artists[0].name}
+                                album={item.album.name}
+                                name={item.name}
+                                image={item.album.images[0].url}/>
+                                </div>}>
+                      <ListGroup.Item variant="dark" action><b>{index + 1}  {item.name}</b></ListGroup.Item>
+                  </OverlayTrigger>
+              ))}
+              </ListGroup>
+              </Col>
+              </Row>
+              </Tab.Container>
+            </div>)
+            }
+            </div>
             )
         }
-        </div>
-        <div>
-            <b>Received:</b> <JSONTree data={this.state.response} theme={theme} invertTheme={true} />
         </div>
         </div>
         ) }

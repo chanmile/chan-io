@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon, Form, FormControl, Button} from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Link, NavLink} from "react-router-dom";
+import { Navbar, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-
-const defaultState = { data: null, error: null};
-
-function resetState() {
-    console.log(this)
-    this.setState(defaultState)
-}
 
 class appNavbar extends Component {
 

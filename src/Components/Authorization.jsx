@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {Button} from 'react-bootstrap';
-import JSONTree from 'react-json-tree'
-
 
 function Authenticate({label}) {
   const [response, setRes] = useState("")

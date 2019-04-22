@@ -4,9 +4,6 @@ import '../css/Style.scss'
 
 function getGenres(genres) {
     var genreString = ''
-    // {genres.map((item, index) => (
-    //     genreString = item + ', ' + item
-    // ))}
 
     for (var i=0; i < genres.length; i++) {
         if (i == genres.length-1) {
@@ -30,9 +27,14 @@ constructor(props) {
 
 }
 
-componentWillMount() {
-    this.setState({ data: this.props.data });
+componentDidUpdate(prevProps, prevState) {
+  if (this.props.data !== prevProps.data) {
 
+    this.setState({ data: this.props.data });
+    this.setState({ albums: null });
+    this.setState({ tracks: null });
+
+    console.dir(this.state.data)
 
     var albumRequest = {
         url: this.props.data.href + '/albums',
@@ -65,7 +67,48 @@ componentWillMount() {
             console.log(this.state.tracks)
           }
         )
+  }
+}
 
+componentWillMount() {
+
+    this.setState({ data: this.props.data });
+    this.setState({ albums: null });
+    this.setState({ tracks: null });
+
+    console.dir(this.state.data)
+
+    var albumRequest = {
+        url: this.props.data.href + '/albums',
+        access_token: this.props.token
+    }
+    fetch("/req",{
+      method: 'POST', // or 'PUT'
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify(albumRequest)
+    })
+      .then(res => res.json() )
+      .then((data) => {
+          this.setState({ albums: data });
+          console.log(this.state.albums)
+        }
+      )
+
+      var tracksRequest = {
+          url: this.props.data.href + '/top-tracks?country=US',
+          access_token: this.props.token
+      }
+      fetch("/req",{
+        method: 'POST', // or 'PUT'
+        headers:{'Content-Type': 'application/json'},
+        body: JSON.stringify(tracksRequest)
+      })
+        .then(res => res.json() )
+        .then((data) => {
+            this.setState({ tracks: data });
+            console.log(this.state.tracks)
+          }
+        )
 }
 
   render() {
