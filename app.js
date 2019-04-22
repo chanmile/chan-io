@@ -42,9 +42,13 @@ if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('chan-io/build'));
 }
 
-app.use(express.static(__dirname + '/build'))
-   .use(cors())
-   .use(cookieParser());
+// app.use(express.static(__dirname + '/build'))
+//    .use(cors())
+//    .use(cookieParser());
+
+app.use(express.static('chan-io/build'))
+      .use(cors())
+      .use(cookieParser());
 
 app.use(bodyParser.json())
 
