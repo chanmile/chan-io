@@ -4,7 +4,7 @@ import {OverlayTrigger, Tab, Row, Col, ListGroup} from 'react-bootstrap';
 import ArtistCard from '../Components/artistCard.jsx';
 import TrackCard from '../Components/trackCard.jsx';
 
-import '../css/Style.scss'
+import '../css/style.scss'
 
 const theme = {
   scheme: 'monokai',

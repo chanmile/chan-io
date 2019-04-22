@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/Style.scss'
+import '../css/style.scss'
 import Authorization from '../Components/Authorization.jsx'
 
 class Spotify_Auth extends Component {

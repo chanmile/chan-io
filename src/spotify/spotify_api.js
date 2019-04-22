@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/Style.scss'
+import '../css/style.scss'
 import SpotifyRequest from '../Components/SpotifyRequest.jsx'
 
 
