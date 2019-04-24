@@ -34,6 +34,7 @@ class Home extends Component {
  and more recently with desktop publishing software like Aldus PageMaker including
  versions of Lorem Ipsum.
   </p>
+  <p>Source code for this website is available <a target="_blank" href="https://github.com/chanmile/chan-io">here</a></p>
 </div>
     );
   }

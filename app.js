@@ -1,3 +1,10 @@
+/*
+    CREDIT to https://github.com/jonnyk20/spotify-node-react-starter-kit.
+    This app.js file is based off of the app.js file of the authentication server
+    example in the above github. The authentication portion of chan-io is solely
+    due to the work in the above github.
+*/
+
 /**
  * This is an example of a basic node.js script that performs
  * the Authorization Code oAuth2 flow to authenticate against
@@ -17,7 +24,7 @@ var bodyParser = require('body-parser')
 var client_id = process.env.CLIENT_ID_SPOTIFY; // Your client id
 var client_secret = process.env.CLIENT_SECRET_SPOTIFY; // Your secret
 var redirect_uri = 'https://chan-io.herokuapp.com/callback'; // Your redirect uri
-// var redirect_uri = 'https://chan-io.herokuapp.com/callback'; // Your redirect uri
+// var redirect_uri = 'http://localhost:8099/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -38,19 +45,11 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
-// if (process.env.NODE_ENV === 'production') {
-// 	app.use(express.static('chan-io/build'));
-// }
-
 app.use(express.static(__dirname + '/build'))
    .use(cors())
    .use(cookieParser());
 
 app.use(bodyParser.json())
-
-// app.get('*', (request, response) => {
-// 	response.sendFile(path.join(__dirname, 'chan-io/build', 'index.html'));
-// });
 
 app.get('/login', function(req, res) {
 
@@ -173,6 +172,6 @@ app.post("/req", function(req, res) {
 
 })
 
-console.log('Listening on 8099');
+// console.log('Listening on 8099');
 // app.listen(8099);
 app.listen(process.env.PORT);
